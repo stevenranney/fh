@@ -13,17 +13,28 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 # If modifying these scopes, delete the file token.json.
-SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
+SCOPES = ['https://www.googleapis.com/auth/calendar.readonly', 'https://www.googleapis.com/auth/drive']
 
-print(sys.argv[1])
-days = int(sys.argv[1])
+# print(sys.argv[1])
+# days = int(sys.argv[1])
 
-def main(d = days):
+def get_events(d = 7):
     """
-    Shows basic usage of the Google Calendar API.
-    Prints the start and name of the next 10 events on the user's calendar.
+    Gets events for the next d days from the Fellowship Hall calendar.
+
+    Parameters
+    ----------
+
+    d int :
+        an int of how many days into the future events should be pulled
+
+    Returns
+    -------
+
+    List of str, list(list)
     """
 
+    print(d)
     creds = None
     
     # The file token.json stores the user's access and refresh tokens, and is
@@ -84,9 +95,16 @@ def main(d = days):
                 }
             )
             
-        pd.DataFrame(meetings).to_csv(
-            path_or_buf = f'events_ending_{end_date}.csv', 
-            index = False)
+        df = pd.DataFrame(meetings)
+
+        values = [df.columns.values.tolist()]
+        values.extend(df.values.tolist())
+
+        return([end_date, values])
+        
+        # df.to_csv(
+        #     path_or_buf = f'events_ending_{end_date}.csv', 
+        #     index = False)
         
         # Writes to json file
 #         with open(f'events_ending_{end_date}.json', 'w', encoding='utf-8') as f:
@@ -96,5 +114,7 @@ def main(d = days):
         print('An error occurred: %s' % error)
 
 
-if __name__ == '__main__':
-    main()
+
+# if __name__ == '__main__':
+#     main()
+
