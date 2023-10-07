@@ -16,7 +16,7 @@ import get_events
 
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly', 'https://www.googleapis.com/auth/spreadsheets']
 
-d = sys.argv[1]
+d = int(sys.argv[1])
 
 def write_events_to_sheet(d = d):
     """
@@ -35,12 +35,9 @@ def write_events_to_sheet(d = d):
 
     """
 
-    events = get_events(d)
+    events = get_events.get_events(d)
     
-    if events[0] is not None:
-        print(f"got {d} days' worth of events! yay!")
-    else: 
-        print('no events retrieved. Sad face.')
+    print(events[1])
 
     if os.path.exists('token.json'):
         creds = Credentials.from_authorized_user_file('token.json', SCOPES)
@@ -76,8 +73,9 @@ def write_events_to_sheet(d = d):
         )
 
         # Create data to go into spreadsheet
-        batch_update_values_request_body = {
-        'value_input_option': 'RAW',
+        batch_update_values = {
+        'ValueInputOption': 'RAW',
+        # 'valueInputOption': 'USER_ENTERED',
         'data': events[1] }
 
         # make the request of the spreadsheet to add data
@@ -86,8 +84,8 @@ def write_events_to_sheet(d = d):
             spreadsheets().
             values().
             batchUpdate(
-                spreadsheetId=spreadsheet.get('spreadsheetId'),
-                body=batch_update_values_request_body
+                spreadsheetId = spreadsheet.get('spreadsheetId'),
+                body = batch_update_values
             )
         )
 
@@ -102,6 +100,6 @@ def write_events_to_sheet(d = d):
         return error
 
 
-# if __name__ == '__main__':
-#     # Pass: title
-#     create(t)
+if __name__ == '__main__':
+    # Pass: title
+    write_events_to_sheet(d)
