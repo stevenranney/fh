@@ -12,6 +12,8 @@ import os.path
 
 import sys
 
+import json
+
 import get_events
 
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly', 'https://www.googleapis.com/auth/spreadsheets']
@@ -37,7 +39,7 @@ def write_events_to_sheet(d = d):
 
     events = get_events.get_events(d)
     
-    print(events[1])
+    # print(events[1])
 
     if os.path.exists('token.json'):
         creds = Credentials.from_authorized_user_file('token.json', SCOPES)
@@ -73,10 +75,15 @@ def write_events_to_sheet(d = d):
         )
 
         # Create data to go into spreadsheet
-        batch_update_values = {
-        'ValueInputOption': 'RAW',
+        sheet_information = {
+        'valueInputOption': 'RAW',
+        # 'range': "Sheet1!A:C",
         # 'valueInputOption': 'USER_ENTERED',
-        'data': events[1] }
+            "data": [
+                {'range': "Sheet1!A:C", 
+                 'values': events[1]}
+                ]
+        }
 
         # make the request of the spreadsheet to add data
         request = (
@@ -85,9 +92,12 @@ def write_events_to_sheet(d = d):
             values().
             batchUpdate(
                 spreadsheetId = spreadsheet.get('spreadsheetId'),
-                body = batch_update_values
+                body = sheet_information
+                # body = batch_update_values
             )
         )
+
+        print(spreadsheet.get('spreadsheetId'))
 
         # EXECUTE REQUEST
         response = request.execute()
