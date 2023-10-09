@@ -101,20 +101,16 @@ def get_events(d = 7):
         values.extend(df.values.tolist())
 
         return([end_date, values])
-        
+
+        # Writes to csv        
         # df.to_csv(
         #     path_or_buf = f'events_ending_{end_date}.csv', 
         #     index = False)
         
-        # Writes to json file
+        # Writes to json
 #         with open(f'events_ending_{end_date}.json', 'w', encoding='utf-8') as f:
 #             json.dump(meetings, f, ensure_ascii=False, indent=4)
         
     except HttpError as error:
         print('An error occurred: %s' % error)
-
-
-
-# if __name__ == '__main__':
-#     main()
 

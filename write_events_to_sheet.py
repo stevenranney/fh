@@ -29,7 +29,7 @@ def write_events_to_sheet(d = d):
 
     d int :
         The date in the future through which the function will pull calendar events. 
-        This date will also serve as the file name of the written sheet.
+        This date will also serve as the partial file name of the written sheet.
     
     Returns
     -------
@@ -39,8 +39,6 @@ def write_events_to_sheet(d = d):
 
     events = get_events.get_events(d)
     
-    # print(events[1])
-
     if os.path.exists('token.json'):
         creds = Credentials.from_authorized_user_file('token.json', SCOPES)
     # If there are no (valid) credentials available, let the user log in.
@@ -55,7 +53,6 @@ def write_events_to_sheet(d = d):
         with open('token.json', 'w') as token:
             token.write(creds.to_json())
 
-    # pylint: disable=maybe-no-member
     try:
         service = build('sheets', 'v4', credentials=creds)
         spreadsheet = {
@@ -77,8 +74,6 @@ def write_events_to_sheet(d = d):
         # Create data to go into spreadsheet
         sheet_information = {
         'valueInputOption': 'RAW',
-        # 'range': "Sheet1!A:C",
-        # 'valueInputOption': 'USER_ENTERED',
             "data": [
                 {'range': "Sheet1!A:C", 
                  'values': events[1]}
@@ -93,17 +88,13 @@ def write_events_to_sheet(d = d):
             batchUpdate(
                 spreadsheetId = spreadsheet.get('spreadsheetId'),
                 body = sheet_information
-                # body = batch_update_values
             )
         )
-
-        print(spreadsheet.get('spreadsheetId'))
 
         # EXECUTE REQUEST
         response = request.execute()
 
-        print(spreadsheet.get('spreadsheetId'))
-        # print(f"Spreadsheet ID: {(spreadsheet.get('spreadsheetId'))}")
+        print(f"Spreadsheet ID: {(spreadsheet.get('spreadsheetId'))}")
         return spreadsheet.get('spreadsheetId')
     except HttpError as error:
         print(f"An error occurred: {error}")
@@ -111,5 +102,4 @@ def write_events_to_sheet(d = d):
 
 
 if __name__ == '__main__':
-    # Pass: title
     write_events_to_sheet(d)
