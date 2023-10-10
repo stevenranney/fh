@@ -57,19 +57,24 @@ def write_events_to_sheet(d = d):
         service = build('sheets', 'v4', credentials=creds)
         spreadsheet = {
             'properties': {
-                'title': f'events_through_{events[0]}'
+                'title': 'FH Weekly Calendar'
             }
         }
         # Instantiate a spreadsheet
-        spreadsheet = (
-            service.
-            spreadsheets().
-            create(
-                body=spreadsheet,
-                fields='spreadsheetId'
-                ).
-            execute()
-        )
+        # SHR: 10/10 not necessary because bradley created sheet
+        # he wants me to use
+        # spreadsheet = (
+        #     service.
+        #     spreadsheets().
+        #     create(
+        #         body=spreadsheet,
+        #         fields='spreadsheetId'
+        #         ).
+        #     execute()
+        # )
+
+        # Insert spreadsheet ID here:
+        spreadsheetId = '1zee2QgfDLStbDVuf-p9qYwDLdcsS2hj5_s48i2zrH58'
 
         # Create data to go into spreadsheet
         sheet_information = {
@@ -86,7 +91,7 @@ def write_events_to_sheet(d = d):
             spreadsheets().
             values().
             batchUpdate(
-                spreadsheetId = spreadsheet.get('spreadsheetId'),
+                spreadsheetId = spreadsheetId, #spreadsheet.get('spreadsheetId'),
                 body = sheet_information
             )
         )
