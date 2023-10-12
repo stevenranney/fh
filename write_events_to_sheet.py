@@ -18,9 +18,15 @@ import get_events
 
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly', 'https://www.googleapis.com/auth/spreadsheets']
 
-d = int(sys.argv[1])
+# d = int(sys.argv[1])
 
-def write_events_to_sheet(d = d):
+# Check if an argument was provided; if not, default to weekly
+if len(sys.argv) == 1:
+    t = 'weekly'
+else:
+    t = sys.argv[1]
+
+def write_events_to_sheet(t = t):
     """
     Retrieves and writes events to a google sheet
 
@@ -37,6 +43,18 @@ def write_events_to_sheet(d = d):
 
     """
 
+    if t == 'weekly':
+        d = 7
+        spreadsheetId = '1zee2QgfDLStbDVuf-p9qYwDLdcsS2hj5_s48i2zrH58'
+        # FH Weekly Calendar sheet ID - exists in the hall's workspace
+        # spreadsheetId = '1ONrC2u1g1t4oSgSfQ_YvLf6fvq-hYi_jfriGWxmSuWc'
+    elif t == 'daily':
+        d = 1
+        spreadsheetId = '1ONrC2u1g1t4oSgSfQ_YvLf6fvq-hYi_jfriGWxmSuWc'
+    elif t is None: # reverts to weekly
+        d = 7
+        spreadsheetId = '1ONrC2u1g1t4oSgSfQ_YvLf6fvq-hYi_jfriGWxmSuWc'
+    
     events = get_events.get_events(d)
     
     if os.path.exists('token.json'):
@@ -74,7 +92,9 @@ def write_events_to_sheet(d = d):
         # )
 
         # Insert spreadsheet ID here:
-        spreadsheetId = '1zee2QgfDLStbDVuf-p9qYwDLdcsS2hj5_s48i2zrH58'
+        # spreadsheetId = '1zee2QgfDLStbDVuf-p9qYwDLdcsS2hj5_s48i2zrH58'
+        # FH Weekly Calendar sheet ID - exists in the hall's workspace
+        #spreadsheetId = '1ONrC2u1g1t4oSgSfQ_YvLf6fvq-hYi_jfriGWxmSuWc'
 
         # Create data to go into spreadsheet
         sheet_information = {
@@ -107,4 +127,4 @@ def write_events_to_sheet(d = d):
 
 
 if __name__ == '__main__':
-    write_events_to_sheet(d)
+    write_events_to_sheet(t)
