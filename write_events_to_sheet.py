@@ -45,9 +45,8 @@ def write_events_to_sheet(t = t):
 
     if t == 'weekly':
         d = 7
-        spreadsheetId = '1zee2QgfDLStbDVuf-p9qYwDLdcsS2hj5_s48i2zrH58'
         # FH Weekly Calendar sheet ID - exists in the hall's workspace
-        # spreadsheetId = '1ONrC2u1g1t4oSgSfQ_YvLf6fvq-hYi_jfriGWxmSuWc'
+        spreadsheetId = '1zee2QgfDLStbDVuf-p9qYwDLdcsS2hj5_s48i2zrH58'
     elif t == 'daily':
         d = 1
         spreadsheetId = '1ONrC2u1g1t4oSgSfQ_YvLf6fvq-hYi_jfriGWxmSuWc'
@@ -90,12 +89,7 @@ def write_events_to_sheet(t = t):
         #         ).
         #     execute()
         # )
-
-        # Insert spreadsheet ID here:
-        # spreadsheetId = '1zee2QgfDLStbDVuf-p9qYwDLdcsS2hj5_s48i2zrH58'
-        # FH Weekly Calendar sheet ID - exists in the hall's workspace
-        #spreadsheetId = '1ONrC2u1g1t4oSgSfQ_YvLf6fvq-hYi_jfriGWxmSuWc'
-
+        
         # Create data to go into spreadsheet
         sheet_information = {
         'valueInputOption': 'RAW',
