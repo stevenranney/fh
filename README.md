@@ -1,5 +1,5 @@
-## fh_calendar
+## fh
 
-Code related to pulling and writing events to the Fellowship Hall's google workspace. 
+For now, only includes code related to pulling and writing events to the Fellowship Hall's google workspace. Python + Google's Drive API make this easy. 
 
-What's deployed on the FH server is different than that presented here and was uploaded remotely to the server rather than pulling from here.
+May include additional functionality later but this was the big need from the board.
